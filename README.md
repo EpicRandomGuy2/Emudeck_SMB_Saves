@@ -30,4 +30,9 @@ You should now be pulling saves from your network drive on startup, and pushing 
 
 Note: I can't get `shutdown_network_save_push.service` to work on shutdown, it doesn't even execute, not sure what the reason is. Keeping it here for later debugging.
 
+Another note: I've got `/home/deck/Emulation/roms` symlinked to `/var/mnt/server_name>/Emulation/roms`, which is also great because I don't have to move games between systems anymore:
+```
+ln -s /var/mnt/server_name>/Emulation/roms /home/deck/Emulation/roms 
+```
+
 To do: Set up a startup/timer script that works with Windows
