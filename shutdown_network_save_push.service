@@ -1,0 +1,12 @@
+[Unit]
+Description=Run script at shutdown
+DefaultDependencies=no
+Requires=network.target
+Before=shutdown.target reboot.target halt.target network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/deck/Emulation/deck_to_nas.sh
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target

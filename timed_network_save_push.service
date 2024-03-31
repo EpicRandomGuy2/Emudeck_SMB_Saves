@@ -1,0 +1,7 @@
+[Unit]
+Description=Run network save push every x minutes according to timer
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/home/deck/Emulation/deck_to_nas.sh
