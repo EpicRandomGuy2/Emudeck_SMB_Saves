@@ -5,7 +5,7 @@
 
 # The generated script, nas_to_deck.sh, will be set to run on a cadence later.
 
-NETWORK_STORAGE_PATH="<YOUR_NETWORK_STORAGE_PATH>" # Your network storage path, probably something like /var/mnt/<folder> or /mnt/<folder>
+NETWORK_STORAGE_PATH="/var/mnt/mnemosyne" # Your network storage path, probably something like /var/mnt/<folder> or /mnt/<folder>
 SOURCE_DIR="/home/deck/Emulation/saves" # Hardcoded because this is just where the folder lives on a default Emudeck install, change it if needed
 DEST_DIR="$NETWORK_STORAGE_PATH/Emulation/saves"  # Copies the folder structure of Emudeck 
 
@@ -16,7 +16,7 @@ touch "$EXCLUDES_FILE"
 # Begin script generation
 echo "#!/bin/bash" > nas_to_deck.sh
 # Mount the network storage because on startup, it's not guaranteed the storage is mounted yet - if it is, this line will just error harmlessly
-echo "mount $NETWORK_STORAGE_PATH" > nas_to_deck.sh
+echo "mount $NETWORK_STORAGE_PATH" >> nas_to_deck.sh
 
 # Find all symlinks and generate rsync commands
 find "$SOURCE_DIR" -type l | while read -r symlink; do
@@ -34,7 +34,8 @@ find "$SOURCE_DIR" -type l | while read -r symlink; do
   echo "echo \"Syncing from: $DEST_DIR/$relative_path/$target/\"" >> nas_to_deck.sh
   echo "echo \"Syncing to: $target/\"" >> nas_to_deck.sh
   
-  echo "rsync -avhu --no-links \"$DEST_DIR/$relative_path/$target/\" \"$target/\"" >> nas_to_deck.sh
+  # Generate the rsync command
+  echo "rsync -avhu --no-links --chown=deck:deck \"$DEST_DIR/$relative_path/$target/\" \"$target/\"" >> nas_to_deck.sh
 done
 
 echo "rsync -avhu --no-links --exclude-from='$EXCLUDES_FILE' \"$DEST_DIR\" \"$SOURCE_DIR\"" >> nas_to_deck.sh
